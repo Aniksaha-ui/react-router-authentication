@@ -1,9 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useFirebase from "../../hooks/useFirebase";
+import { getAuth, signOut } from "firebase/auth";
+import app from "../../firebase.init";
+import { useAuthState } from "react-firebase-hooks/auth";
 
+const auth = getAuth(app);
 const Header = () => {
-  const { user, handleLogout } = useFirebase();
+  const [user] = useAuthState(auth);
+
+  const logout = () => {
+    signOut(auth);
+  };
+  // const { user, handleLogout } = useFirebase();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
@@ -24,23 +33,27 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="#">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Home
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#product">
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to="/products"
+              >
                 Product
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#">
-                About Us
+              <Link className="nav-link" to="/orders">
+                Orders
               </Link>
             </li>
             <li className="nav-item">
               {user?.uid ? (
-                <Link className="nav-link" onClick={handleLogout} to="/login">
+                <Link className="nav-link" onClick={logout} to="/login">
                   Logout
                 </Link>
               ) : (

@@ -14,6 +14,7 @@ const useFirebase = () => {
   const [user, setUser] = useState({});
   useEffect(() => {}, []);
 
+  //google login
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((res) => {
@@ -24,12 +25,14 @@ const useFirebase = () => {
       .catch((error) => console.log(error));
   };
 
+  //for conditional rendering we have to update the state
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
   }, []);
 
+  //sign out
   const handleLogout = () => {
     signOut(auth)
       .then(() => {})
